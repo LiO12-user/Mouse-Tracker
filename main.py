@@ -29,10 +29,9 @@ class Mouse:
 
 class Axis:
     def __init__(self):
-        self.y_axis_array = [200]
-        self.x_axis_array = [200]
-
-
+        self.range = 20
+        self.y_axis_array = []
+        self.x_axis_array = []
 
     pass
 
@@ -65,9 +64,19 @@ screen = s.set_mode()
 
 mouse = Mouse()
 
+axis = Axis()
+
+# index of axis arrays
+index = 0
 
 while True:
     screen.fill((0, 0, 0))
+
+    if axis.y_axis_array and axis.x_axis_array:
+        for i in range(index):
+            for i in range(index):
+                pg.draw.line(screen, (10, 110, 10), (0, axis.y_axis_array[i]), (800, axis.y_axis_array[i]), 1)
+                pg.draw.line(screen, (10, 110, 10), (axis.x_axis_array[i], 0), (axis.x_axis_array[i], 800), 1)
 
     mouse.draw_vertical_line(mouse.get_position()[0])
     mouse.draw_horizontal_line(mouse.get_position()[1])
@@ -83,7 +92,13 @@ while True:
             mouse.draw_horizontal_line(mouse.get_position()[1])
             pg.display.update()
         if event.type == pg.MOUSEBUTTONDOWN:
-            pg.draw.lines(screen, (10, 110, 10), False, [(200, 300), (500, 600)] ,20)
+            index += 1
+            axis.x_axis_array.append(mouse.get_position()[0])
+            axis.y_axis_array.append(mouse.get_position()[1])
+
+            axis.range += 1
+            print(axis.range)
+            print(index)
             # mouse_x, mouse_y = mouse.get_position()[0], mouse.get_position()[1]
 
     pg.display.update()
